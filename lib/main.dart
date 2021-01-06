@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_movil/Navigation/navigation.dart';
-import 'package:proyecto_movil/RouteGenerator/route_generator.dart';
-
+import 'package:proyecto_movil/Pages/home_page.dart';
 
 void main() => runApp(ProyectoMovil());
 
@@ -11,9 +9,10 @@ class ProyectoMovil extends StatelessWidget {
     return MaterialApp(
       title: 'Project 3738',
       debugShowCheckedModeBanner: false,
-      home: Navigation(),
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
+      initialRoute: 'home',
+      routes: {
+        'home': (BuildContext context) => HomePage(),
+      },
     );
   }
 }

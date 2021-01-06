@@ -1,16 +1,15 @@
+/*
 import 'package:flutter/material.dart';
-import 'package:proyecto_movil/Pages/reports_page.dart';
-import 'package:proyecto_movil/Pages/new_report_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => ReportsPage());
+        return MaterialPageRoute(builder: (_) => );
       case '/reports':
         if (args is String) {
-          return MaterialPageRoute(builder: (_) => NewReportPage(
+          return MaterialPageRoute(builder: (_) => (
             //data: args,
           ));
         }
@@ -29,3 +28,4 @@ class RouteGenerator {
     });
   }
 }
+*/
