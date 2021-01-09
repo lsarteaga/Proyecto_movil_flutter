@@ -1,15 +1,39 @@
 class ReportModel {
-  final String idReport;
-  final String title;
-  final String description;
-  final String hour;
-  final String slug;
+  String idReport;
+  String title;
+  String description;
+  String address;
+  String hour;
+  String slug;
 
-  ReportModel.fromJson(Map <String, dynamic> json)
-      : idReport = json['_id'],
-        title = json['title'],
-        description = json['description'],
-        hour = json['hour'],
-        slug = json['slug'];
+  ReportModel(
+      {this.idReport,
+      this.title,
+      this.description,
+      this.hour,
+      this.address,
+      this.slug});
 
+  ReportModel.fromJsonMap(Map<dynamic, dynamic> json) {
+    if (json != null) {
+      idReport = json['_id'];
+      title = json['title'];
+      description = json['description'];
+      address = json['address'];
+      hour = json['time'];
+      slug = json['slug'];
+    }
+  }
+}
+
+class ReportsModel {
+  List<ReportModel> items = List();
+  ReportsModel();
+  ReportsModel.fromJsonList(List<dynamic> jsonList) {
+    if (jsonList == null) return;
+    for (var item in jsonList) {
+      final reportModel = new ReportModel.fromJsonMap(item);
+      items.add(reportModel);
+    }
+  }
 }

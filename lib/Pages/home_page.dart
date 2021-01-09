@@ -34,11 +34,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildBody(),
       bottomNavigationBar: buildBottomNavigationBar(),
+      drawer: buildDrawer(),
     );
   }
 
@@ -67,6 +73,42 @@ class _HomePageState extends State<HomePage> {
       ],
       currentIndex: _selectedIndex,
       onTap: onItemTapped,
+      selectedItemColor: Theme.of(context).primaryColor,
+    );
+  }
+
+  Widget buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountEmail: Text("email@email.com"),
+            accountName: Text("User Account"),
+            currentAccountPicture: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Quito.jpg/420px-Quito.jpg"),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('Settings'),
+            onTap: () {},
+          ),
+          Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: Text('About'),
+            onTap: () {},
+          ),
+        ],
+      ),
     );
   }
 }
