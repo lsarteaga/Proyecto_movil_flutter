@@ -26,10 +26,19 @@ class _ReportWidgetState extends State<ReportWidget> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : ListView(
-            children: _list.items.map((e) {
-              return _getReportItem(e);
-            }).toList(),
+        : Scaffold(
+            body: ListView(
+              children: _list.items.map(
+                (e) {
+                  return _getReportItem(e);
+                },
+              ).toList(),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              tooltip: 'New Report',
+              child: Icon(Icons.add),
+            ),
           );
   }
 

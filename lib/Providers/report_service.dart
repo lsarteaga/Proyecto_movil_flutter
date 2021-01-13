@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:proyecto_movil/Models/report_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:proyecto_movil/Common/constant.dart';
 
 class ReportService {
-  String _urlRoot = 'http://10.0.2.2:3000/api';
+  String _urlRoot = Constant.DOMAIN + Constant.PATH;
   ReportService();
   Future<ReportsModel> _requestList(String url) async {
     try {

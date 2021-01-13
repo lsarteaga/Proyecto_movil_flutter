@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+String reportToJson(ReportModel data) => json.encode(data.toJson());
+
 class ReportModel {
   String idReport;
   String title;
@@ -24,6 +28,15 @@ class ReportModel {
       slug = json['slug'];
     }
   }
+
+  Map<String, dynamic> toJson() => {
+        'idReport': idReport,
+        'title': title,
+        'description': description,
+        'time': hour,
+        'address': address,
+        'slug': slug,
+      };
 }
 
 class ReportsModel {
