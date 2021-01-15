@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/Models/report_model.dart';
+import 'package:proyecto_movil/Pages/home_page.dart';
 import 'package:proyecto_movil/Providers/report_service.dart';
-import 'package:proyecto_movil/Common/constant.dart';
 
 class FormReportWidget extends StatefulWidget {
   FormReportWidget({Key key}) : super(key: key);
@@ -15,31 +15,55 @@ class _FormReportWidgetState extends State<FormReportWidget> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Report'),
+        centerTitle: true,
+      ),
+      body: buildBodyForm(),
+    );
+  }
+
+  Widget buildBodyForm() {
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.all(14.0),
         child: Form(
           key: formKey,
           child: Column(
-            children: [],
+            children: [
+              _getFieldTitle(),
+              Divider(
+                color: Theme.of(context).primaryColorDark,
+              ),
+              _getFieldAddress(),
+              Divider(
+                color: Theme.of(context).primaryColorDark,
+              ),
+              _getFieldDescription(),
+              Divider(
+                color: Theme.of(context).primaryColorDark,
+              ),
+              _getSubmitButton(),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _getDescription() {
+  Widget _getFieldTitle() {
     return TextFormField(
-      initialValue: _report.description,
-      decoration: InputDecoration(labelText: 'Message'),
-      maxLength: 255,
-      maxLines: 5,
+      initialValue: _report.title,
+      decoration: InputDecoration(labelText: 'Title'),
+      maxLength: 30,
+      maxLines: 2,
       onSaved: (value) {
-        _report.description = value;
+        _report.title = value;
       },
       validator: (value) {
-        if (value.length < 20) {
-          return 'message must be at least 20 characters';
+        if (value.length < 10) {
+          return 'Title must be at least 10 characters';
         } else {
           return null;
         }
@@ -47,14 +71,53 @@ class _FormReportWidgetState extends State<FormReportWidget> {
     );
   }
 
-  Widget getSubmit() {
+  Widget _getFieldDescription() {
+    return TextFormField(
+      initialValue: _report.description,
+      decoration: InputDecoration(labelText: 'Description'),
+      maxLength: 255,
+      maxLines: 5,
+      onSaved: (value) {
+        _report.description = value;
+      },
+      validator: (value) {
+        if (value.length < 30) {
+          return 'Description must be at least 30 characters';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _getFieldAddress() {
+    return TextFormField(
+      initialValue: _report.address,
+      decoration: InputDecoration(labelText: 'Address'),
+      maxLength: 50,
+      maxLines: 3,
+      onSaved: (value) {
+        _report.address = value;
+      },
+      validator: (value) {
+        if (value.length < 15) {
+          return 'Address must be at least 15 characters';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _getSubmitButton() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       child: RaisedButton(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [Icon(Icons.send), SizedBox(width: 15.0), Text('Send')],
         ),
-        onPressed: _submitForm(),
+        onPressed: _submitForm,
       ),
     );
   }
@@ -62,5 +125,38 @@ class _FormReportWidgetState extends State<FormReportWidget> {
   _submitForm() {
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
+    _service.post(_report).then((value) {
+      print(value);
+      if (value != null) {
+        formKey.currentState.reset();
+        /*Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Report added at: ' + value.hour),
+          ),
+        );*/
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Report added'),
+                content: Text(value.title),
+                actions: [
+                  FlatButton(
+                    padding: EdgeInsets.zero,
+                    child: new Text('Close'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ));
+                    },
+                  ),
+                ],
+              );
+            });
+      }
+    });
   }
 }

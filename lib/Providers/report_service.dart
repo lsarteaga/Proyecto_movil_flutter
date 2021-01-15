@@ -6,6 +6,7 @@ import 'package:proyecto_movil/Common/constant.dart';
 
 class ReportService {
   String _urlRoot = Constant.DOMAIN + Constant.PATH;
+  Map<String, String> _headers = {'Content-Type': 'application/json'};
   ReportService();
   Future<ReportsModel> _requestList(String url) async {
     try {
@@ -27,6 +28,21 @@ class ReportService {
       final decodedData = json.decode(resp.body);
       final report = new ReportModel.fromJsonMap(decodedData);
       return report;
+    } on Exception catch (e) {
+      print('Exception: $e');
+      return null;
+    }
+  }
+
+  Future<ReportModel> post(ReportModel report) async {
+    try {
+      String url = '$_urlRoot/reports';
+      final resp =
+          await http.post(url, headers: _headers, body: reportToJson(report));
+      if (resp.body.isEmpty) return null;
+      final decodedData = json.decode(resp.body);
+      final respReport = new ReportModel.fromJsonMap(decodedData);
+      return respReport;
     } on Exception catch (e) {
       print('Exception: $e');
       return null;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_movil/Pages/report_page.dart';
 import 'package:proyecto_movil/Models/report_model.dart';
 import 'package:proyecto_movil/Providers/report_service.dart';
+import 'package:proyecto_movil/Widgets/form_report_widget.dart';
 
 class ReportWidget extends StatefulWidget {
   ReportWidget({Key key}) : super(key: key);
@@ -35,7 +36,13 @@ class _ReportWidgetState extends State<ReportWidget> {
               ).toList(),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FormReportWidget(),
+                    ));
+              },
               tooltip: 'New Report',
               child: Icon(Icons.add),
             ),
