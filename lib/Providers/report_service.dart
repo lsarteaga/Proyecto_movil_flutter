@@ -49,6 +49,19 @@ class ReportService {
     }
   }
 
+  Future<ReportModel> _delete(String url) async {
+    try {
+      final resp = await http.delete(url);
+      if (resp.body.isEmpty) return null;
+      final decodedData = json.decode(resp.body);
+      final report = new ReportModel.fromJsonMap(decodedData);
+      return report;
+    } on Exception catch (e) {
+      print('Exception: $e');
+      return null;
+    }
+  }
+
   Future<ReportsModel> getReports() async {
     String path = '$_urlRoot/reports';
     return await _requestList(path);
@@ -57,5 +70,10 @@ class ReportService {
   Future<ReportModel> getReport(String id) async {
     String path = '$_urlRoot/reports/$id';
     return await _request(path);
+  }
+
+  Future<ReportModel> deleteReport(String id) async {
+    String path = '$_urlRoot/reports/$id';
+    return await _delete(path);
   }
 }

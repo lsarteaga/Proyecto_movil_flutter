@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:proyecto_movil/Pages/home_page.dart';
 import 'package:proyecto_movil/Pages/report_page.dart';
 import 'package:proyecto_movil/Models/report_model.dart';
 import 'package:proyecto_movil/Providers/report_service.dart';
@@ -58,27 +60,81 @@ class _ReportWidgetState extends State<ReportWidget> {
   }
 
   Widget _getReportItem(ReportModel report) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ReportPage(
-              idReport: report.slug,
-            ),
-          ),
-        );
-      },
+    double width = MediaQuery.of(context).size.width * 0.2;
+    double height = MediaQuery.of(context).size.height * 0.2;
+    return Container(
       child: Card(
-        elevation: 2.0,
+        elevation: 4.0,
         shadowColor: Theme.of(context).primaryColorDark,
         child: ListTile(
-          trailing: Icon(Icons.arrow_back),
-          leading: Icon(Icons.access_alarm_rounded),
-          title: Text(report.title),
-          subtitle: Text(report.description),
+          isThreeLine: true,
+          onLongPress: () {
+            _deleteReportItem(report);
+          },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ReportPage(
+                  idReport: report.slug,
+                ),
+              ),
+            );
+          },
+          leading: Image.network(
+            'https://th.bing.com/th/id/OIP.usOyL_lkNZVweV1wSnYOHAHaEK?w=317&h=180&c=7&o=5&dpr=1.25&pid=1.7',
+            fit: BoxFit.cover,
+            height: height,
+            width: width,
+          ),
+          trailing: Icon(Icons.arrow_right),
+          title: Text(
+            report.title,
+            maxLines: 1,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            report.description,
+            maxLines: 2,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+          ),
         ),
       ),
     );
+  }
+
+  _deleteReportItem(ReportModel report) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete report?'),
+            content: const Text('This will delete the report permanently'),
+            actions: [
+              FlatButton(
+                padding: EdgeInsets.zero,
+                child: const Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                padding: EdgeInsets.zero,
+                child: const Text('ACCEPT'),
+                onPressed: () {
+                  var aux = _service.deleteReport(report.slug);
+                  if (aux == null) {
+                    print('ocurrio un error');
+                  } else {
+                    print(aux);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  }
+                },
+              ),
+            ],
+          );
+        });
   }
 }
