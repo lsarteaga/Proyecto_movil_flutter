@@ -60,6 +60,9 @@ class _ReportWidgetState extends State<ReportWidget> {
   }
 
   Widget _getReportItem(ReportModel report) {
+    // date parse
+    var parsedDate = DateTime.parse(report.hour);
+
     double width = MediaQuery.of(context).size.width * 0.2;
     double height = MediaQuery.of(context).size.height * 0.2;
     return Container(
@@ -87,7 +90,25 @@ class _ReportWidgetState extends State<ReportWidget> {
             height: height,
             width: width,
           ),
-          trailing: Icon(Icons.arrow_right),
+          //trailing: Icon(Icons.arrow_right),
+          trailing: Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(Icons.navigate_next),
+                SizedBox(
+                  height: 6,
+                ),
+                Text(parsedDate.day.toString() +
+                    '-' +
+                    parsedDate.month.toString() +
+                    '-' +
+                    parsedDate.year.toString()),
+              ],
+            ),
+          ),
           title: Text(
             report.title,
             maxLines: 1,

@@ -144,7 +144,7 @@ class _FormReportWidgetState extends State<FormReportWidget> {
                 actions: [
                   FlatButton(
                     padding: EdgeInsets.zero,
-                    child: new Text('Close'),
+                    child: const Text('CLOSE'),
                     onPressed: () {
                       Navigator.push(
                           context,
