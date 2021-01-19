@@ -29,26 +29,59 @@ class _ReportWidgetState extends State<ReportWidget> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Scaffold(
-            body: ListView(
-              children: _list.items.map(
-                (e) {
-                  return _getReportItem(e);
-                },
-              ).toList(),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FormReportWidget(),
-                    ));
-              },
-              tooltip: 'New Report',
-              child: Icon(Icons.add),
-            ),
-          );
+        : _list.items.length == 0
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 50,
+                      icon: Icon(
+                        Icons.note_add,
+                      ),
+                      tooltip: 'New',
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FormReportWidget(),
+                            ));
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        'Hello, start creating a new report :)',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Scaffold(
+                body: ListView(
+                  children: _list.items.map(
+                    (e) {
+                      return _getReportItem(e);
+                    },
+                  ).toList(),
+                ),
+                floatingActionButton: _buildFloatingActionButton(),
+              );
+  }
+
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FormReportWidget(),
+            ));
+      },
+      tooltip: 'New Report',
+      child: Icon(Icons.add),
+    );
   }
 
   _loadReports() {
@@ -146,7 +179,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                 onPressed: () {
                   var aux = _service.deleteReport(report.slug);
                   if (aux == null) {
-                    print('ocurrio un error');
+                    print('an error has ocurred');
                   } else {
                     print(aux);
                     Navigator.push(context,

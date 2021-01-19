@@ -9,13 +9,20 @@ class FormReportWidget extends StatefulWidget {
 }
 
 class _FormReportWidgetState extends State<FormReportWidget> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   ReportModel _report = new ReportModel();
   ReportService _service = new ReportService();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('New Report'),
         centerTitle: true,
@@ -81,7 +88,7 @@ class _FormReportWidgetState extends State<FormReportWidget> {
         _report.description = value;
       },
       validator: (value) {
-        if (value.length < 30) {
+        if (value.length < 10) {
           return 'Description must be at least 30 characters';
         } else {
           return null;
@@ -100,7 +107,7 @@ class _FormReportWidgetState extends State<FormReportWidget> {
         _report.address = value;
       },
       validator: (value) {
-        if (value.length < 15) {
+        if (value.length < 10) {
           return 'Address must be at least 15 characters';
         } else {
           return null;
@@ -129,11 +136,20 @@ class _FormReportWidgetState extends State<FormReportWidget> {
       print(value);
       if (value != null) {
         formKey.currentState.reset();
-        /*Scaffold.of(context).showSnackBar(
+
+        /* scaffoldKey.currentState.showSnackBar(
           SnackBar(
             content: Text('Report added at: ' + value.hour),
+            action: SnackBarAction(
+              label: 'ok',
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                );
+              },
+            ),
           ),
-        );*/
+        ); */
         showDialog(
             context: context,
             barrierDismissible: false,
